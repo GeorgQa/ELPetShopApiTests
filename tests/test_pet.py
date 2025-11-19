@@ -15,7 +15,9 @@ class TestPet:
             response = requests.delete(url=f"{BASE_URL}/pet/9999")
 
         with allure.step("Проверка статуса кода"):
-            assert response.status_code == 200, "Статус код ответа не совпал с ожидаемым"
+            assert (
+                response.status_code == 200
+            ), "Статус код ответа не совпал с ожидаемым"
 
         with allure.step("Проверка текстового содержимого ответа"):
             assert response.text == "Pet deleted", "Текст ошибки не совпал с ожидаемым"
@@ -56,7 +58,9 @@ class TestPet:
             jsonschema.validate(instance=response.json(), schema=PET_SCHEMA)
             response_json = response.json()
         with allure.step("Проверка статус кода"):
-            assert response.status_code == 200, "Статус код ответа не совпал с ожидаемым"
+            assert (
+                response.status_code == 200
+            ), "Статус код ответа не совпал с ожидаемым"
 
         with allure.step("Проверка параметров ответа на создание питомца"):
             assert (
@@ -81,14 +85,14 @@ class TestPet:
                 "status": "available",
             }
 
-
-
         with allure.step("Отправка запроса на создание питомца"):
             response = requests.post(url=f"{BASE_URL}/pet", json=payload)
             jsonschema.validate(instance=response.json(), schema=PET_SCHEMA)
             response_json = response.json()
         with allure.step("Проверка статус кода"):
-            assert response.status_code == 200, "Статус код ответа не совпал с ожидаемым"
+            assert (
+                response.status_code == 200
+            ), "Статус код ответа не совпал с ожидаемым"
 
         with allure.step("Проверка параметров ответа на создание питомца"):
             assert (
@@ -122,7 +126,9 @@ class TestPet:
             pet_id = create_pet["id"]
         with allure.step("Отправка запроса на получение информации о питомце по ID"):
             response = requests.get(f"{BASE_URL}/pet/{pet_id}")
-            assert response.status_code == 200, "Статус код ответа не совпал с ожидаемым"
+            assert (
+                response.status_code == 200
+            ), "Статус код ответа не совпал с ожидаемым"
             assert (
                 response.json()["id"] == pet_id
             ), f"Пришел не корректный ID животного \n Ожидаемый результат: {pet_id} \n Фактический результат: {response.json()['id']}"
@@ -132,16 +138,30 @@ class TestPet:
         with allure.step("Получение ID созданного питомце"):
             pet_id = create_pet["id"]
         with allure.step("Подготовка данных для изменения питомца"):
-            payload_data_for_pet_update  = {"id": pet_id, "name": "Buddy Updated", "status": "sold"}
+            payload_data_for_pet_update = {
+                "id": pet_id,
+                "name": "Buddy Updated",
+                "status": "sold",
+            }
         with allure.step("Валидация тестовых данных по json-schema"):
             jsonschema.validate(instance=create_pet, schema=PET_SCHEMA)
         with allure.step("Отправка запроса на изменение животного"):
-            response_update = requests.put(f"{BASE_URL}/pet" , json= payload_data_for_pet_update)
+            response_update = requests.put(
+                f"{BASE_URL}/pet", json=payload_data_for_pet_update
+            )
             response_update_json = response_update.json()
-            assert  response_update.status_code == 200 , "Статус код ответа не совпал с ожидаемым"
-            assert  response_update_json["id"] == payload_data_for_pet_update["id"] , "ID животного после обновления не равен ID до обновления"
-            assert  response_update_json["name"] == payload_data_for_pet_update["name"], "NAME животного после обновления не равно ожидаемому"
-            assert  response_update_json["status"] == payload_data_for_pet_update["status"] , "STATUS животного после обновления не равен ожидаемому"
+            assert (
+                response_update.status_code == 200
+            ), "Статус код ответа не совпал с ожидаемым"
+            assert (
+                response_update_json["id"] == payload_data_for_pet_update["id"]
+            ), "ID животного после обновления не равен ID до обновления"
+            assert (
+                response_update_json["name"] == payload_data_for_pet_update["name"]
+            ), "NAME животного после обновления не равно ожидаемому"
+            assert (
+                response_update_json["status"] == payload_data_for_pet_update["status"]
+            ), "STATUS животного после обновления не равен ожидаемому"
 
     @allure.title("Удаление существующего питомца")
     def test_delete_pet(self, create_pet):
@@ -149,9 +169,17 @@ class TestPet:
             pet_id = create_pet["id"]
         with allure.step("Отправка запроса на удаление питомца"):
             response_delete = requests.delete(f"{BASE_URL}/pet/{pet_id}")
-            assert  response_delete.status_code == 200 , "Статус код ответа не совпал с ожидаемым"
-            assert  response_delete.text == "Pet deleted" , "Текст ошибки не совпал с ожидаемым"
+            assert (
+                response_delete.status_code == 200
+            ), "Статус код ответа не совпал с ожидаемым"
+            assert (
+                response_delete.text == "Pet deleted"
+            ), "Текст ошибки не совпал с ожидаемым"
         with allure.step("Отправка запроса на получение питомца после удаления"):
-            response_get_after_delete = requests.get(url= f"{BASE_URL}/pet/{pet_id}")
-            assert  response_get_after_delete.status_code == 404 , "Статус код ответа не совпал с ожидаемым"
-            assert  response_get_after_delete.text == "Pet not found" , "Текст ошибки не совпал с ожидаемым"
+            response_get_after_delete = requests.get(url=f"{BASE_URL}/pet/{pet_id}")
+            assert (
+                response_get_after_delete.status_code == 404
+            ), "Статус код ответа не совпал с ожидаемым"
+            assert (
+                response_get_after_delete.text == "Pet not found"
+            ), "Текст ошибки не совпал с ожидаемым"
