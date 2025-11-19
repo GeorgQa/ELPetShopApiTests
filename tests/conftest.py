@@ -16,5 +16,5 @@ def create_pet():
         "status": "available",
     }
     response = requests.post(url=f"{BASE_URL}/pet", json=payload)
-    assert  response.status_code == 200
+    assert  response.status_code == 200 , "Пришел не корректный статус код"
     return  response.json()
