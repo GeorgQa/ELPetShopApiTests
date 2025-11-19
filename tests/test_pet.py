@@ -90,25 +90,25 @@ class TestPet:
         with allure.step("Проверка параметров ответа на создание питомца"):
             assert (
                 response_json["id"] == payload["id"]
-            ), "id запроса != параметрам ответа "
+            ), "id запроса не равен соответствующему параметру в ответе"
             assert (
                 response_json["name"] == payload["name"]
-            ), "name запроса != параметрам ответа "
+            ), "name запросане равен соответствующему параметру в ответе"
             assert (
                 response_json["status"] == payload["status"]
-            ), "status запроса != параметрам ответа"
+            ), "status запроса не равен соответствующему параметру в ответе"
             assert (
                 response_json["category"]["id"] == payload["category"]["id"]
-            ), "['category']['id'] в запросе != ['category']['id'] в ответе"
+            ), "['category']['id'] в запросе не равен соответствующему параметру в ответе"
             assert (
                 response_json["category"]["name"] == payload["category"]["name"]
-            ), "['category']['name'] в запросе != ['category']['name'] в ответе"
+            ), "['category']['name'] в запросе не равен соответствующему параметру в ответе"
             assert (
                 response_json["tags"][0]["id"] == payload["tags"][0]["id"]
-            ), "['tags']['id'] в запросе != ['tags']['id'] в ответе"
+            ), "['tags']['id'] в запросе не равен соответствующему параметру в ответе"
             assert (
                 response_json["tags"][0]["name"] == payload["tags"][0]["name"]
-            ), "['tags']['name'] в запросе != ['tags']['name'] в ответе"
+            ), "['tags']['name'] в запросене равен соответствующему параметру в ответе"
             assert (
                 response_json["photoUrls"] == payload["photoUrls"]
-            ), "['photoUrls'] в запросе != ['photoUrls'] в ответе"
+            ), "['photoUrls'] в запросе не равен соответствующему параметру в ответе"
