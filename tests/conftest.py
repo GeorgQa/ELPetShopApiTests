@@ -1,0 +1,20 @@
+import pytest
+import requests
+
+BASE_URL = "http://5.181.109.28:9090/api/v3"
+
+
+@pytest.fixture(scope="class")
+def create_pet():
+    """Фикстура для создания питомца."""
+    payload = {
+        "id": 10,
+        "name": "doggie",
+        "category": {"id": 1, "name": "Dogs"},
+        "photoUrls": ["string"],
+        "tags": [{"id": 0, "name": "string"}],
+        "status": "available",
+    }
+    response = requests.post(url=f"{BASE_URL}/pet", json=payload)
+    assert  response.status_code == 200
+    return  response.json()

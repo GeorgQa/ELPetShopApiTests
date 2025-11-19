@@ -112,3 +112,14 @@ class TestPet:
             assert (
                 response_json["photoUrls"] == payload["photoUrls"]
             ), "['photoUrls'] в запросе не равен соответствующему параметру в ответе"
+
+    @allure.title("Получение информации о питомце по ID")
+    def test_get_pet_by_id(self, create_pet):
+        with allure.step("Получение ID созданного питомца"):
+            pet_id = create_pet["id"]
+        with allure.step("Отправка запроса на получение информации о питомце по ID"):
+            response = requests.get(f"{BASE_URL}/pet/{pet_id}")
+            assert response.status_code == 200, "Пришел не корректный статус код"
+            assert (
+                response.json()["id"] == pet_id
+            ), f"Пришел не корректный ID животного \n Ожидаемый результат: {pet_id} \n Фактический результат: {response.json()['id']}"
