@@ -104,7 +104,7 @@ class TestPet:
                 response_json["category"]["id"] == payload["category"]["id"]
             ), "['CATEGORY']['ID'] в запросе не равен соответствующему параметру в ответе"
             assert (
-                response_json["CATEGORY"]["name"] == payload["category"]["name"]
+                response_json["category"]["name"] == payload["category"]["name"]
             ), "['CATEGORY']['NAME'] в запросе не равен соответствующему параметру в ответе"
             assert (
                 response_json["tags"][0]["id"] == payload["tags"][0]["id"]
