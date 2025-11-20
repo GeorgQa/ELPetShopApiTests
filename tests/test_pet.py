@@ -1,4 +1,5 @@
 import jsonschema
+import pytest
 
 from .schemas.pet_schema import PET_SCHEMA
 import allure
@@ -183,3 +184,35 @@ class TestPet:
             assert (
                 response_get_after_delete.text == "Pet not found"
             ), "Текст ошибки не совпал с ожидаемым"
+
+    @allure.title("Получение списка питомцев по статусу")
+    @pytest.mark.parametrize(
+        "status, expected_status_code",
+        [
+            ("available", 200),
+            ("pending", 200),
+            ("sold", 200),
+            (" ", 400),
+            ("random_params", 400),
+        ],
+    )
+    def test_get_pet_status(self, status, expected_status_code):
+        with allure.step(
+            f"Отправка запроса на получение питомцев по статусу {status}!"
+        ):
+            response_get = requests.get(
+                f"{BASE_URL}/pet/findByStatus", params={"status": f"{status}"}
+            )
+        with allure.step("Проверка статус кода и формата ответа"):
+            assert (
+                response_get.status_code == expected_status_code
+            ), f"Статус код ответа: {response_get.status_code} не совпал с ожидаемым: {expected_status_code}"
+            if response_get.status_code == 200:
+                assert isinstance(response_get.json(), list)
+            elif response_get.status_code == 400:
+                assert (
+                    response_get.json()["message"]
+                    == f"Input error: query parameter `status value `{status}` is not in the allowable values `[available, pending, sold]`"
+                )
+            else:
+                f"При получение списка питомцев по status: {status}, возникла непредвиденная ошибка"
